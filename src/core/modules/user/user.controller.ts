@@ -22,6 +22,7 @@ import {
   UpdateUserUseCase,
 } from './use-cases';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('user')
 export class UserController {
@@ -52,6 +53,8 @@ export class UserController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(15)
   findAll(@Query() queryParams: QueryParamsDto) {
     return this.findAllUserUseCase.execute(queryParams);
   }
